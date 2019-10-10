@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>leaflet热力图</title>
+    <link href="../plugins/leaflet/leaflet.css" type="text/css" rel="stylesheet" />
+    <style>
+        #map {
+            height: 1000px;
+            width: 1500px;
+        }
+    </style>
+    <!-- <script src="Script/leaflet/leaflet.js"></script>
+    <script src="data/heatmap.min.js"></script>
+    <script src="data/leaflet-heatmap.js"></script> -->
+</head>
+
+<body>
+    <div id="map"></div>
+    <script src="../js/jquery-1.8.0.min.js"></script>
+    <script src="../plugins/leaflet/leaflet.js"></script>
+    <script src="../plugins/leaflet/leaflet.ChineseTmsProviders.js"></script>
+    <script src="../plugins/leaflet/leaflet.motion-master/dist/leaflet.motion.js"></script>
+    <!-- <script src="../plugins/leaflet/leaflet.motion.js"></script> -->
+    <script src="../plugins/leaflet/heatmap.min.js"></script>
+    <script src="../plugins/leaflet/leaflet-heatmap.js"></script>
+    <script>
+        /**  
+ * 天地图内容  
+ */
+        var normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
+            maxZoom: 18,
+            minZoom: 5
+        }),
+            normala = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
+                maxZoom: 18,
+                minZoom: 5
+            }),
+            imgm = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            }),
+            imga = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+
+        var normal = L.layerGroup([normalm, normala]),
+            image = L.layerGroup([imgm, imga]);
+
+        var baseLayers = {
+            "天地图": normal
+        }
+        //数据
+        var testData = {
+            max: 8,
+            data: [{ lat: 24.6408, lng: 46.7728, count: 3 },
+            { lat: 50.75, lng: -1.55, count: 1 },
+            { lat: 51.55, lng: -1.55, count: 9 },
+            { lat: 52.65, lng: -1.45, count: 8 },
+            { lat: 53.45, lng: -1.35, count: 7 },
+            { lat: 54.35, lng: -1.25, count: 6 },
+            { lat: 5.25, lng: -1.15, count: 5 },
+            ]
+        };
+        //配置
+        var cfg = {
+            "radius": 2,
+            "maxOpacity": .8,
+            "scaleRadius": true,
+            "useLocalExtrema": true,
+            latField: 'lat',
+            lngField: 'lng',
+            valueField: 'count'
+        };
+        var heatmapLayer = new HeatmapOverlay(cfg);
+        var map = L.map("map", {
+            center: new L.LatLng(50.75, -1.55),
+            // center: [ 46.7728, 24.6408],
+            zoom: 12,
+            // layers: [normal,heatmapLayer],
+            layers: [normal],
+            zoomControl: false,
+            attributionControl: false,
+            fadeAnimation: false
+        });
+        //双击不允许缩放
+        map.doubleClickZoom.disable();
+        L.control.layers(baseLayers, null).addTo(map);
+        L.layerGroup([heatmapLayer]);
+        heatmapLayer.setData(testData);
+
+    </script>
+</body>
+
+</html>

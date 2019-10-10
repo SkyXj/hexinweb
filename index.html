@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>首页大屏</title>
+	<link rel="stylesheet" href="./css/style.css" />
+	<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+</head>
+
+<body>
+	<header>
+		首页概况
+		<span id=localtime></span>
+	</header>
+	<div id="content">
+		<div class="content_left">
+			<div class="dtuplc">
+				<div class="title"><img src="images/icon01.png" /> 问题个数排名</div>
+				<div id="top_five_abnormal"></div>
+			</div>
+			<div class="online">
+				<div class="title"><img src="images/icon01.png" /> 企业TVOC峰值浓度排名</div>
+				<div class="online_con" id="container2">
+
+				</div>
+			</div>
+			<div class="industry">
+				<div class="title"><img src="images/icon02.png" /> 重点问题行业占比</div>
+				<div class="industry_con" id="top_five_abnormal_rate"></div>
+			</div>
+		</div>
+		<div class="content_center">
+			<div class="center_top" height="100%">
+				<div class="title">
+					<img src="images/icon03.png" /> 走航
+				</div>
+				<div class="center_top_con">
+					<!-- <iframe src="/zh/main.html" style="border-width: 0px" width="100%"height="100%"></iframe> -->
+				</div>
+			</div>
+		</div>
+		<div class="content_right">
+			<div class="right1">
+				<div class="title">
+					<img src="images/icon04.png" />
+					走航计划
+				</div>
+				<div class="chat1" id="right_chat1"></div>
+			</div>
+			<!-- <div class="right2">
+				<div class="title">
+					<img src="images/icon04.png" />
+					走航进度
+				</div>
+				<div class="chat2" id="right_chat2"></div>
+			</div> -->
+			<div class="right3">
+				<div class="title"><img src="images/icon04.png" />问题整改情况</div>
+				<div class="chat3" id="right_chat3">
+						<iframe src="/scroll2.html" scrolling="no" style="border-width: 0px" width="100%"height="100%"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/echarts.min.js"></script>
+	<script type="text/javascript" src="js/china.js"></script>
+	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/times.js"></script>
+	<script type="text/javascript" src="js/online.js"></script>
+	<!-- <script type="text/javascript" src="js/industry.js"></script> -->
+	<!-- <script type="text/javascript" src="js/data.js"></script> -->
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+	</script>
+
+</body>
+
+</html>

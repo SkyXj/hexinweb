@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>滚动2</title>
+    <script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    table td {
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+
+    #container {
+        width: 600px;
+        height: 500px;
+        padding: 0;
+        box-sizing: border-box;
+        overflow:hidden
+    }
+
+    #right-div {
+        float: left;
+        width: 320px;
+    }
+
+    #right-div1 {
+        width: 100%;
+        /* overflow: hidden; */
+    }
+
+    #right-div2 {
+        width: 100%;
+        height: 250px;
+        /* overflow: auto; */
+    }
+
+    #right-table1 {
+        width: 320px;
+    }
+
+    #right-table2 {
+        width: 320px;
+        /* overflow: auto; */
+    }
+
+    th,
+    td {
+        height: 50px;
+        width: 80px;
+        line-height: 50px;
+        /* overflow: hidden; */
+        text-align: center;
+    }
+
+    th {
+        color: #1E304F;
+        background-color: #F3F8FF;
+    }
+
+    td {
+        color: #384967;
+    }
+
+    tr:nth-of-type(odd) {
+        background: #E7F2FF;
+    }
+
+</style>
+
+<body>
+    <!-- <div id="news">
+            <ul>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="aaaaaaaaaaaaaaa">aaaaaaaaaaaaaaa</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="bbbbbbbbbbbbbbb">bbbbbbbbbbbbbbb</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="ccccccccccccccc">ccccccccccccccc</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="ddddddddddddddd">ddddddddddddddd</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="eeeeeeeeeeeeeee">eeeeeeeeeeeeeee</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="fffffffffffffff">fffffffffffffff</a></li>
+            <li><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" title="ggggggggggggggg">ggggggggggggggg</a></li>
+            </ul>
+            </div> -->
+
+    <div id="right-div1">
+        <table id="right-table1">
+            <tr>
+                <th>设备名称</th>
+                <th>设备类型</th>
+                <th>故障类型</th>
+                <th>故障状态</th>
+            </tr>
+        </table>
+    </div>
+    <div id="container">
+        <div id="right-div">
+
+            <div id="right-div2">
+                <table id="right-table2"></table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+
+        // let htmlLeft = '';
+        let htmlRight = '';
+        // for (let i = 1; i <= 7; i++) {
+        //     htmlLeft += '<tr>';
+        //     htmlLeft += '<td>' + i + '</td>';
+        //     htmlLeft += '</tr>';
+        // }
+        for (let i = 1; i <= 100; i++) {
+            htmlRight += '<tr>';
+            htmlRight += '<td>A</td>';
+            htmlRight += '<td>100</td>';
+            htmlRight += '<td>500</td>';
+            htmlRight += '<td>' + i + '</td>';
+            htmlRight += '</tr>';
+        }
+        // $('#left-table2').html(htmlLeft);
+        $('#right-table2').html(htmlRight);
+
+
+        var $this = $("#right-div2");
+        var scrollTimer;
+        $this.hover(function () {
+            clearInterval(scrollTimer);
+        }, function () {
+            scrollTimer = setInterval(function () {
+                scrollNews($this);
+            }, 1000);
+        }).trigger("mouseleave");
+        function scrollNews(obj) {
+            var $self = obj.find("#right-table2");
+            var count = $self.find("tr").length;
+            var lineHeight = $self.find("tr:first").height() * count;
+            $self.animate({
+                "marginTop": -lineHeight + "px"
+            }, count *2000, function () {
+                $self.css({
+                    marginTop: 0
+                }).find("tr:first").appendTo($self);
+            })
+        }
+    })
+</script>
+
+</html>

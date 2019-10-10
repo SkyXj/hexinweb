@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>解码</title>
+	<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="./js/public.js"></script>
+    <script type="text/javascript" src="./js/decode.js"></script>
+</head>
+
+<body>
+    <div>
+        <input id="city" name="city" type="text">
+        <textarea id="str"></textarea>
+        <div>
+            <p id="result"></p>
+        </div>
+        <button onclick="decode()">解密</button>
+    </div>
+	
+    <script type="text/javascript">
+    var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    $(function(){
+        // var object = {};
+        // object['city'] = "杭州";
+        // var method = 'GETDATA';
+        // console.log(getParam(method, object));
+        //getData();
+    })
+    function decode(){
+        var str1=$("#str").val();
+        var sss= decodeData(str1);
+        $("#result").html(sss);
+        // getData();
+    }
+
+    function getData(){
+        var url="https://www.aqistudy.cn/apinew/aqistudyapi.php";
+        var object = {};
+        object['city'] = $("#city").val();
+        var method = 'GETDATA';
+        var param=getParam(method, object);
+        $.ajax({
+            url: url,
+            data: {
+                d: param
+            },
+            type: "post",
+            success: function(data) {
+                console.log(data);
+                data = decodeData(data);
+                obj = JSON.parse(data);
+                if (obj.success) {
+                    $("#str").html(data);
+                    console.log(obj);
+                } else {
+                    console.log(obj.errcode, obj.errmsg);
+                }
+            }
+        })
+    }
+    </script>
+
+</body>
+
+</html>

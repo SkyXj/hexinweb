@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <link href="../plugins/leaflet/leaflet.css" type="text/css" rel="stylesheet" />
+    <link href="../plugins/bootstrap-3.3.7-dist/lib/bootstrap/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="../plugins/bootstrap-3.3.7-dist/css/bootstrap-chinese-region.min.css" type="text/css" rel="stylesheet">
+
+    <link href="../plugins/supermap_iclient_1000/dist/leaflet/iclient-leaflet.css" type="text/css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="../plugins/bootstrap-3.3.7-dist/lib/bootstrap-chinese-region/bootstrap-chinese-region.css">
+    <link href="../plugins/assets/css/icons.css" rel="stylesheet" />
+    <link href="../plugins/assets/css/plugins.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="../plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+<style>
+    body,
+    html,
+    #map {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+
+
+    #left {
+        position: absolute;
+        width: 20%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        /* background-color:#3b475b; */
+        opacity: 0.9;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    #right {
+        position: absolute;
+        width: 20%;
+        height: 100%;
+        right: 0px;
+        top: 0px;
+        background-color: blue;
+        opacity: 0.9;
+        z-index: 2;
+    }
+
+    #bottom {
+        position: absolute;
+        width: 60%;
+        height: 20%;
+        bottom: 0px;
+        right: 20%;
+        background-color: brown;
+        opacity: 0.9;
+        z-index: 3;
+    }
+
+    #map {
+        z-index: 1;
+    }
+
+
+    .selectStationBtn {
+        border-radius: 0px;
+        padding-left: 18px;
+        background-image: url(../images/mPoint-3.png);
+        background-repeat: no-repeat;
+        background-size: 12px;
+        background-position: 5px 7px;
+        width: 95%;
+        
+    }
+
+    canvas {
+        margin: 20px auto;
+        display: block;
+    }
+
+    .slide {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+        text-align: center;
+        /* 文字等内容居中 */
+        opacity: 0.9;
+        background: rgba(255, 255, 255, 0.6);
+        line-height: 50px;
+    }
+
+    #leftslideup {
+        position: absolute;
+        left: -50px;
+        top: 0px;
+        z-index: 2;
+        /* border:1px solid	#FFFFFF; */
+    }
+</style>
+
+<body>
+    <div>
+        <div id="map" style="width: 100vw;height: 100vh">
+
+        </div>
+        <!-- 图例 -->
+        <div id="legend">
+        </div>
+        <!-- 左侧边栏展开 -->
+        <div id="leftslideup" class="slide" onclick="slideRight()">
+            <i class="fa fa-angle-double-left fa-2x fa-flip-horizontal"></i>
+            <!-- <span onclick="slideRight()" class="glyphicon glyphicon-menu-right"></span> -->
+        </div>
+        <div id="left">
+            <!-- 左侧边栏收缩 -->
+            <div class="slide" style="text-align: right;width:100%">
+                <i onclick="slideLeft()" class="fa fa-angle-double-left fa-2x"></i>
+            </div>
+
+            <div class="dropdown">
+                <button class="btn btn-default form-control selectStationBtn" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+                    <span style="color:#999">请选择站点...</span>
+                </button>
+                <div class="dropdown-menu " aria-labelledby="dropdownMenu1">
+                     <!-- <div class="input-group">
+                            <i class="fa fa-search form-control-feedback"></i>
+                            <input type="text" class="form-control" placeholder="请输入关键字搜索">
+                     </div> -->
+                     <div style="padding: 2px; display: table;" class="input-group">                             
+                        <i class="fa fa-search form-control-feedback" style="top:12px;color:#bbb;left:0px;z-index:5;"></i>                             
+                        <input type="text" class="form-control" style="padding-left:25px;border-radius:4px;" placeholder="输入关键字搜索">                             
+                        <span class="input-group-btn"><button class="btn btn-default" data-id="clear-select">清除</button></span>                             
+                        <span class="input-group-btn"><button class="btn btn-default" data-id="ok">完成</button></span>                            
+                    </div>
+                </div>
+            </div>
+
+            <!-- <button onclick="hotmapcreate()">取消热力图</button>
+            <button onclick="addPoint()">添加一个发光的点</button>
+            <button onclick="addFlashPoint()">添加闪烁</button>
+            <button onclick="addCircle()">addCircle</button>
+            <button onclick="clickMap()">地图点击事件</button>
+            <button onclick="getZhJson()">动态轨迹</button>
+            <button onclick="addCircleMaker()">addCircleMaker</button>
+            <button onclick="runpoint2()">runpoint2</button>
+            <button onclick="startdrawLine()">绘线</button>
+            <button onclick="startdrawPolygon()">绘多边形</button>
+            <button onclick="startdrawRectangle()">绘制矩形</button>
+            <button onclick="drawRadar()">雷达</button> -->
+            <!-- <button onclick="draw()">矩形</button> -->
+
+
+
+            <!-- <div class="form-group">
+                <label for="address">地区</label>
+                <div class="bs-chinese-region flat dropdown" data-submit-type="id" data-min-level="1"
+                    data-max-level="3">
+                    <input type="text" class="form-control" name="address" id="address" placeholder="选择你的地区"
+                        data-toggle="dropdown" readonly="" value="440103">
+                    <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#province" data-next="city" role="tab"
+                                        data-toggle="tab">省份</a></li>
+                                <li role="presentation"><a href="#city" data-next="district" role="tab"
+                                        data-toggle="tab">城市</a>
+                                </li>
+                                <li role="presentation"><a href="#district" data-next="street" role="tab"
+                                        data-toggle="tab">县区</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="province">--</div>
+                                <div role="tabpanel" class="tab-pane" id="city">--</div>
+                                <div role="tabpanel" class="tab-pane" id="district">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div style="width: 95%">
+                <!-- 这个控制input的宽高   -->
+                <div class="input-group">
+                    <!--这个控制后面图片与input在一起的  -->
+                    <input id="adddate" class="form-control" placeholder="申请日期范围" />
+                    <span class="input-group-addon"><i class="fa-calendar"></i></span>
+                </div>
+                <!-- <input onclick="a()" type="button" value="提交" />  自己用来测试input中的内容   -->
+            </div>
+        </div>
+        <!-- 左边侧栏 -->
+        <!-- <div id="left">
+            dsfsda
+        </div>
+    
+        <div id="right">
+    
+        </div>
+        <div id="bottom">
+    
+        </div> -->
+    </div>
+    <script type="text/javascript" src="../plugins/bootstrap-3.3.7-dist/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../plugins/bootstrap-3.3.7-dist/lib/bootstrap/bootstrap.js"></script>
+    <script type="text/javascript"
+        src="../plugins/bootstrap-3.3.7-dist/lib/bootstrap-chinese-region/bootstrap-chinese-region.js"></script>
+    <!-- 日历控件 -->
+    <script src="../plugins/assets/plugins/core/moment/moment.min.js"></script>
+    <script src="../plugins/assets/plugins/forms/daterangepicker/daterangepicker.js"></script>
+    <script src="../plugins/assets/plugins/forms/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="../plugins/assets/plugins/forms/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <script src="../plugins/leaflet/leaflet.js"></script>
+    <script src="../plugins/supermap_iclient_1000/dist/leaflet/iclient-leaflet.js"></script>
+    <!-- <script type="text/javascript" src="http://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"></script> -->
+    <script src="../plugins/leaflet/leaflet.ChineseTmsProviders.js"></script>
+    <script src="../plugins/leaflet/leaflet.motion-master/dist/leaflet.motion.js"></script>
+    <!-- <script src="../plugins/leaflet/leaflet.motion.js"></script> -->
+    <script src="../plugins/leaflet/heatmap.min.js"></script>
+    <script src="../plugins/leaflet/leaflet-heatmap.js"></script>
+    <script src="../plugins/leaflet/Leaflet.AnimatedMarker-master/src/AnimatedMarker.js"></script>
+    <script src="../js/zh/map-init.js"></script>
+    <script src="../js/zh/main.js"></script>
+    <script src="../js/zh/map-draw.js"></script>
+
+    <script>
+        $.getJSON('../data/city.json', function (data) {
+
+            /**重定义数据结构**/
+            /**
+             * id 键,name 名字,level 层级,parentId 父级
+             */
+            for (var i = 0; i < data.length; i++) {
+                var area = { id: data[i].id, name: data[i].cname, level: data[i].level, parentId: data[i].upid };
+                data[i] = area;
+            }
+
+            $('.bs-chinese-region').chineseRegion('source', data);//导入数据并实例化
+        });
+
+        $("#settingInGraph").mousedown(function (e) {
+            if (3 == e.which) {
+                document.oncontextmenu = function () { return false; }
+                $("#contextMenu").hide();
+                $("#contextMenu").attr("style", "display: block; position: fixed; top:"
+                    + e.pageY
+                    + "px; left:"
+                    + e.pageX
+                    + "px; width: 180px;");
+                $("#contextMenu").show();
+            }
+        });
+        $("#settingInGraph").click(function (e) {
+            $("#contextMenu").hide();
+        });
+
+
+
+
+        $(document).ready(
+            function () {
+                $('#adddate').daterangepicker({
+                    // startDate: moment().startOf('day'),  
+                    //endDate: moment(),  
+                    minDate: '1971-01-01',    //最小时间  =====>>格式要跟格式化的样式一致
+                    endDate: moment(), //最大时间   
+                    dateLimit: { days: 30 }, //起止时间的最大间隔  
+                    showDropdowns: true,
+                    showWeekNumbers: false, //是否显示第几周  
+                    timePicker: true, //是否显示小时和分钟  
+                    timePickerIncrement: 60, //时间的增量，单位为分钟  
+                    timePicker12Hour: false, //是否使用12小时制来显示时间  
+                    ranges: {
+                        '最近1小时': [moment().subtract('hours', 1), moment()],  //moment.js需要详细了解的可以点我一下
+                        '今天': [moment().startOf('day'), moment()],
+                        '昨天': [
+                            moment().subtract('days', 1).startOf('day'),
+                            moment().subtract('days', 1).endOf('day')],
+                        '最近7日': [moment().subtract('days', 6),
+                        moment()],
+                        '最近30日': [moment().subtract('days', 29),
+                        moment()]
+                    },
+                    opens: 'right', //日期选择框的弹出位置  
+                    buttonClasses: ['btn btn-default'],
+                    applyClass: 'btn-small btn-primary blue',
+                    cancelClass: 'btn-small',
+                    format: 'YYYY-MM-DD HH:MM:SS', //控件中from和to 显示的日期格式  
+                    separator: ' 到 ',
+                    locale: {
+                        applyLabel: '确定',
+                        cancelLabel: '取消',
+                        fromLabel: '起始时间',
+                        toLabel: '结束时间',
+                        customRangeLabel: '自定义时间',
+                        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                        monthNames: ['一月', '二月', '三月', '四月', '五月',
+                            '六月', '七月', '八月', '九月', '十月', '十一月',
+                            '十二月'],
+                        firstDay: 1
+                    }
+                },
+                    function (start, end, label) {//格式化日期显示框  
+                        $('#adddate span').html(
+                            start.format('MM-DD-YYYY HH:MM:SS') + ' - '
+                            + end.format('YYYY-MM-DD HH:MM:SS'));
+                    });
+                /*         $("#startdate").datetimepicker({
+                            language : 'zh-CN',
+                            format : "yyyy-mm-dd",
+                            autoclose : true,
+                            todayBtn : true,
+                            pickerPosition : "bottom-left",
+                            minView : 2            //最精准的时间选择为日期0-分 1-时 2-日 3-月 
+                        });
+        
+                        $("#enddate").datetimepicker({
+                            language : 'zh-CN',
+                            format : "yyyy-mm-dd",
+                            autoclose : true,
+                            todayBtn : true,
+                            pickerPosition : "bottom-left",
+                            minView : 2
+                        });  */
+            });
+    </script>
+</body>
+
+</html>
