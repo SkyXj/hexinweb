@@ -19,6 +19,17 @@ getZhJson();
 // }
 
 function drawLine(data) {
+
+    //添加点
+    var options = {
+        // highlight: 'permanent',
+        highlight: 'temporary',
+        draggable: true,
+        color: 'green',
+        weight:9,
+        opacity:0.5
+    };
+
     var points = [];
     let i=0;
     data.forEach(element => {
@@ -27,10 +38,18 @@ function drawLine(data) {
         temp.push(element[2]);
         temp.push(element[1]);
         points.push(temp);
+        
+        var marker = L.marker([element[2], element[1]], options).addTo(map);
+        var draggable = new L.Draggable(marker);
+        draggable.enable();
         }
         i++;
     });
-    L.polyline(points, { color: 'green',weight:8,opacity:0.5 }).addTo(this.map).bindPopup("green to red");
+    var polyline=L.polyline(points, { color: 'green',weight:8,opacity:0.5 }).addTo(this.map);
+    polyline.on("click",function(e){
+        alert(e.latlng.toString());
+    });
+    map.fitBounds(polyline.getBounds());
 }
 
 function runpoint(data) {

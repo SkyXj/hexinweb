@@ -79,7 +79,7 @@
         background-size: 12px;
         background-position: 5px 7px;
         width: 95%;
-        
+
     }
 
     canvas {
@@ -127,20 +127,30 @@
             </div>
 
             <div class="dropdown">
-                <button class="btn btn-default form-control selectStationBtn" type="button" id="dropdownMenu1" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-default form-control selectStationBtn" type="button" id="dropdownMenu1"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <span style="color:#999">请选择站点...</span>
                 </button>
-                <div class="dropdown-menu " aria-labelledby="dropdownMenu1">
-                     <!-- <div class="input-group">
-                            <i class="fa fa-search form-control-feedback"></i>
-                            <input type="text" class="form-control" placeholder="请输入关键字搜索">
-                     </div> -->
-                     <div style="padding: 2px; display: table;" class="input-group">                             
-                        <i class="fa fa-search form-control-feedback" style="top:12px;color:#bbb;left:0px;z-index:5;"></i>                             
-                        <input type="text" class="form-control" style="padding-left:25px;border-radius:4px;" placeholder="输入关键字搜索">                             
-                        <span class="input-group-btn"><button class="btn btn-default" data-id="clear-select">清除</button></span>                             
-                        <span class="input-group-btn"><button class="btn btn-default" data-id="ok">完成</button></span>                            
+                <div id="dddd" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <div id="dropdownmenuid">
+                        <!-- <div class="input-group">
+                                       <i class="fa fa-search form-control-feedback"></i>
+                                       <input type="text" class="form-control" placeholder="请输入关键字搜索">
+                                </div> -->
+                        <div style="padding: 2px; display: table;" class="input-group">
+                            <i class="fa fa-search form-control-feedback"
+                                style="top:12px;color:#bbb;left:0px;z-index:5;"></i>
+                            <input type="text" class="form-control" style="padding-left:25px;border-radius:4px;"
+                                placeholder="输入关键字搜索">
+                            <span class="input-group-btn"><button class="btn btn-default"
+                                    data-id="clear-select">清除</button></span>
+                            <span class="input-group-btn"><button class="btn btn-default"
+                                    data-id="ok" id="ok">完成</button></span>
+                        </div>
+                        <div data-ul="0" style="margin:0 0 0px 3px;clear:both;" class="subtree">
+                            <a data-id="125" class="treeview-item btn btn-default" unselectable="on" title="涧西区" style="float:left;width:155px;">涧西区</a>
+                            <a data-id="126" class="treeview-item btn btn-default" unselectable="on" title="西工区" style="float:left;width:155px;">西工区</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -161,7 +171,7 @@
 
 
 
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="address">地区</label>
                 <div class="bs-chinese-region flat dropdown" data-submit-type="id" data-min-level="1"
                     data-max-level="3">
@@ -187,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <div style="width: 95%">
                 <!-- 这个控制input的宽高   -->
@@ -235,6 +245,21 @@
     <script src="../js/zh/map-draw.js"></script>
 
     <script>
+
+        $(function () {
+            $("#dropdownMenu1").click(function(){
+                $("#dddd").show();
+            });
+            
+            $("#dropdownmenuid").click(function (event) {
+                // alert("我是小div");
+                event.stopPropagation();  //  阻止事件冒泡
+            });
+            $('#ok').off('click').on('click', function () {
+                $("#dddd").hide();
+            })
+        });
+
         $.getJSON('../data/city.json', function (data) {
 
             /**重定义数据结构**/
